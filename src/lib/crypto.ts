@@ -44,8 +44,15 @@ export async function encryptMessage(
 ): Promise<{ ciphertext: string; iv: string }> {
   const key = await deriveKey(passphrase, orgId);
   const iv = crypto.getRandomValues(new Uint8Array(12));
-  const ct = await crypto.subtle.encrypt({ name: "AES-GCM", iv }, key, enc.encode(plaintext));
-  return { ciphertext: toB64(ct), iv: toB64(iv.buffer) };
+  const ptBytes = enc.encode(plaintext);
+  const ct = await crypto.subtle.encrypt(
+    { name: "AES-GCM", iv: iv as BufferSource },
+    key,
+    ptBytes as BufferSource,
+  );
+  const ivBuf = new ArrayBuffer(iv.byteLength);
+  new Uint8Array(ivBuf).set(iv);
+  return { ciphertext: toB64(ct), iv: toB64(ivBuf) };
 }
 
 export async function decryptMessage(
@@ -56,10 +63,12 @@ export async function decryptMessage(
 ): Promise<string> {
   try {
     const key = await deriveKey(passphrase, orgId);
+    const ivBytes = fromB64(iv);
+    const ctBytes = fromB64(ciphertext);
     const pt = await crypto.subtle.decrypt(
-      { name: "AES-GCM", iv: fromB64(iv) },
+      { name: "AES-GCM", iv: ivBytes as BufferSource },
       key,
-      fromB64(ciphertext),
+      ctBytes as BufferSource,
     );
     return dec.decode(pt);
   } catch {
