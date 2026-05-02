@@ -1,22 +1,22 @@
 import { Outlet, Link, createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
-
+import { Toaster } from "@/components/ui/sonner";
 import appCss from "../styles.css?url";
 
 function NotFoundComponent() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="max-w-md text-center">
-        <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          The page you're looking for doesn't exist or has been moved.
+    <div className="flex min-h-screen items-center justify-center bg-background px-6">
+      <div className="max-w-md text-center font-mono">
+        <div className="text-[10px] tracking-[0.4em] text-muted-foreground">SIGNAL LOST</div>
+        <h1 className="mt-3 text-7xl font-light">404</h1>
+        <p className="mt-3 text-sm text-muted-foreground">
+          This relay does not exist on the network.
         </p>
         <div className="mt-6">
           <Link
             to="/"
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            className="inline-flex items-center justify-center border border-border-strong px-4 py-2 text-xs uppercase tracking-widest hover:bg-surface-2 transition-colors"
           >
-            Go home
+            Return home
           </Link>
         </div>
       </div>
@@ -29,19 +29,26 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "Onion — Anonymous, encrypted communication" },
+      {
+        name: "description",
+        content:
+          "Token-based anonymous chat with end-to-end encryption. No usernames. No passwords. No traces.",
+      },
+      { name: "theme-color", content: "#0f0f0f" },
+      { property: "og:title", content: "Onion — Anonymous, encrypted communication" },
+      {
+        property: "og:description",
+        content: "Token-based anonymous chat with end-to-end encryption.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
+      { rel: "stylesheet", href: appCss },
       {
         rel: "stylesheet",
-        href: appCss,
+        href: "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap",
       },
     ],
   }),
@@ -52,12 +59,13 @@ export const Route = createRootRoute({
 
 function RootShell({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <head>
         <HeadContent />
       </head>
       <body>
         {children}
+        <Toaster theme="dark" position="bottom-right" />
         <Scripts />
       </body>
     </html>
