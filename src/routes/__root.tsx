@@ -43,6 +43,12 @@ export const Route = createRootRoute({
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
+      { name: "twitter:title", content: "Onion — Anonymous, encrypted communication" },
+      { name: "description", content: "WhisperNet Chat provides secure, anonymous communication with advanced organizational tools and onion routing privacy." },
+      { property: "og:description", content: "WhisperNet Chat provides secure, anonymous communication with advanced organizational tools and onion routing privacy." },
+      { name: "twitter:description", content: "WhisperNet Chat provides secure, anonymous communication with advanced organizational tools and onion routing privacy." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/ccde503a-b372-4a9f-b0dd-a7d21d8bd21a/id-preview-9cf686af--2119472d-70f6-4c15-bfc5-29281f30f35e.lovable.app-1777726439480.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/ccde503a-b372-4a9f-b0dd-a7d21d8bd21a/id-preview-9cf686af--2119472d-70f6-4c15-bfc5-29281f30f35e.lovable.app-1777726439480.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
