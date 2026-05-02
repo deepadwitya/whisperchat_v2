@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as SuperuserRouteImport } from './routes/superuser'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as JoinRouteImport } from './routes/join'
+import { Route as AppRouteImport } from './routes/app'
 import { Route as IndexRouteImport } from './routes/index'
 
 const SuperuserRoute = SuperuserRouteImport.update({
@@ -29,6 +30,11 @@ const JoinRoute = JoinRouteImport.update({
   path: '/join',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppRoute = AppRouteImport.update({
+  id: '/app',
+  path: '/app',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -37,12 +43,14 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/app': typeof AppRoute
   '/join': typeof JoinRoute
   '/login': typeof LoginRoute
   '/superuser': typeof SuperuserRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/app': typeof AppRoute
   '/join': typeof JoinRoute
   '/login': typeof LoginRoute
   '/superuser': typeof SuperuserRoute
@@ -50,20 +58,22 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/app': typeof AppRoute
   '/join': typeof JoinRoute
   '/login': typeof LoginRoute
   '/superuser': typeof SuperuserRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/join' | '/login' | '/superuser'
+  fullPaths: '/' | '/app' | '/join' | '/login' | '/superuser'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/join' | '/login' | '/superuser'
-  id: '__root__' | '/' | '/join' | '/login' | '/superuser'
+  to: '/' | '/app' | '/join' | '/login' | '/superuser'
+  id: '__root__' | '/' | '/app' | '/join' | '/login' | '/superuser'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AppRoute: typeof AppRoute
   JoinRoute: typeof JoinRoute
   LoginRoute: typeof LoginRoute
   SuperuserRoute: typeof SuperuserRoute
@@ -92,6 +102,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof JoinRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/app': {
+      id: '/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -104,6 +121,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AppRoute: AppRoute,
   JoinRoute: JoinRoute,
   LoginRoute: LoginRoute,
   SuperuserRoute: SuperuserRoute,
