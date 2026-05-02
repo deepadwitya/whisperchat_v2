@@ -14,7 +14,341 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      audit_logs: {
+        Row: {
+          action: string
+          actor: string
+          created_at: string
+          detail: Json | null
+          id: string
+          org_id: string | null
+        }
+        Insert: {
+          action: string
+          actor: string
+          created_at?: string
+          detail?: Json | null
+          id?: string
+          org_id?: string | null
+        }
+        Update: {
+          action?: string
+          actor?: string
+          created_at?: string
+          detail?: Json | null
+          id?: string
+          org_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "audit_logs_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      categories: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          org_id: string
+          position: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          org_id: string
+          position?: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          org_id?: string
+          position?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "categories_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      channels: {
+        Row: {
+          category_id: string | null
+          created_at: string
+          id: string
+          name: string
+          org_id: string
+          position: number
+        }
+        Insert: {
+          category_id?: string | null
+          created_at?: string
+          id?: string
+          name: string
+          org_id: string
+          position?: number
+        }
+        Update: {
+          category_id?: string | null
+          created_at?: string
+          id?: string
+          name?: string
+          org_id?: string
+          position?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "channels_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "channels_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      invite_codes: {
+        Row: {
+          code: string
+          created_at: string
+          created_by: string | null
+          id: string
+          org_id: string
+          role: Database["public"]["Enums"]["member_role"]
+          used: boolean
+          used_at: string | null
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          org_id: string
+          role?: Database["public"]["Enums"]["member_role"]
+          used?: boolean
+          used_at?: string | null
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          org_id?: string
+          role?: Database["public"]["Enums"]["member_role"]
+          used?: boolean
+          used_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "invite_codes_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "members"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "invite_codes_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      master_invites: {
+        Row: {
+          code: string
+          created_at: string
+          id: string
+          org_name: string
+          used: boolean
+          used_at: string | null
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          id?: string
+          org_name: string
+          used?: boolean
+          used_at?: string | null
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          id?: string
+          org_name?: string
+          used?: boolean
+          used_at?: string | null
+        }
+        Relationships: []
+      }
+      members: {
+        Row: {
+          created_at: string
+          display_name: string
+          id: string
+          org_id: string
+          role: Database["public"]["Enums"]["member_role"]
+        }
+        Insert: {
+          created_at?: string
+          display_name: string
+          id?: string
+          org_id: string
+          role?: Database["public"]["Enums"]["member_role"]
+        }
+        Update: {
+          created_at?: string
+          display_name?: string
+          id?: string
+          org_id?: string
+          role?: Database["public"]["Enums"]["member_role"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "members_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      messages: {
+        Row: {
+          channel_id: string
+          ciphertext: string
+          created_at: string
+          id: string
+          iv: string
+          member_id: string
+        }
+        Insert: {
+          channel_id: string
+          ciphertext: string
+          created_at?: string
+          id?: string
+          iv: string
+          member_id: string
+        }
+        Update: {
+          channel_id?: string
+          ciphertext?: string
+          created_at?: string
+          id?: string
+          iv?: string
+          member_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_channel_id_fkey"
+            columns: ["channel_id"]
+            isOneToOne: false
+            referencedRelation: "channels"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "messages_member_id_fkey"
+            columns: ["member_id"]
+            isOneToOne: false
+            referencedRelation: "members"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      organizations: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
+      session_tokens: {
+        Row: {
+          created_at: string
+          id: string
+          last_used_at: string | null
+          member_id: string
+          token_hash: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          last_used_at?: string | null
+          member_id: string
+          token_hash: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          last_used_at?: string | null
+          member_id?: string
+          token_hash?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "session_tokens_member_id_fkey"
+            columns: ["member_id"]
+            isOneToOne: false
+            referencedRelation: "members"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      superuser: {
+        Row: {
+          created_at: string
+          id: number
+          must_change: boolean
+          password_hash: string
+          token_hash: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          must_change?: boolean
+          password_hash: string
+          token_hash: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          must_change?: boolean
+          password_hash?: string
+          token_hash?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +357,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      member_role: "admin" | "moderator" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +484,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      member_role: ["admin", "moderator", "user"],
+    },
   },
 } as const
